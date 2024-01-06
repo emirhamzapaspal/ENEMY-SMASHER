@@ -161,6 +161,11 @@ enemy = pygame.image.load("enemy.png")
 enemy_pos = enemy.get_rect()
 enemy_pos.topleft = (pencere.get_width() -200 , pencere. get_height() - 400)
 
+playerComponents = [player_pos, sword_pos, sword_attack_pos, playerup_pos, playerright_pos, playerleft_pos]
+
+x_velocity = 0
+y_velocity = 0
+
 while running:
     for etkinlik in pygame.event.get():
         if etkinlik.type == pygame.QUIT:
@@ -212,69 +217,41 @@ while running:
             tsa_bar.bar = bar
             pencere.blit(yazi3, yazi3_pos)
             if keys[pygame.K_w]:
-                player_pos.y -= 2
-                playerleft_pos.y -= 2
-                playerup_pos.y -= 2
-                playerright_pos.y -= 2
-                sword_pos.y -= 2
-                sword_attack_pos.y -= 2
+                x_velocity = 0
+                y_velocity = -2
                 pencere.blit(playerup, playerup_pos)
                 sb = True
-                if keys[pygame.K_SPACE]:
-                    pencere.blit(sword_attack, sword_attack_pos)
-                    pencere.blit(playerup, playerup_pos)
-                    bar = bar -  0.1
-                    sb = False
             elif keys[pygame.K_s]:
-                player_pos.y += 2
-                playerup_pos.y += 2
-                playerleft_pos.y += 2
-                playerright_pos.y += 2
-                sword_pos.y += 2
-                sword_attack_pos.y += 2
+                x_velocity = 0
+                y_velocity = 2
                 sb = True
                 pencere.blit(player, player_pos)
-                if keys[pygame.K_SPACE]:
-                    pencere.blit(sword_attack, sword_attack_pos)
-                    pencere.blit(player, player_pos)
-                    bar = bar -  0.1
-                    sb = False
             elif keys[pygame.K_a]:
-                player_pos.x -= 2
-                playerup_pos.x -= 2
-                playerleft_pos.x -= 2
-                playerright_pos.x -= 2
-                sword_pos.x -= 2
-                sword_attack_pos.x -= 2
+                x_velocity = -2
+                y_velocity = 0
                 sb = True
                 pencere.blit(playerleft, playerleft_pos)
-                if keys[pygame.K_SPACE]:
-                    pencere.blit(sword_attack, sword_attack_pos)
-                    pencere.blit(playerleft, playerleft_pos)
-                    bar = bar -  0.1
-                    sb = False
             elif keys[pygame.K_d]:
-                player_pos.x += 2
-                playerleft_pos.x += 2
-                playerup_pos.x += 2
-                playerright_pos.x += 2
-                sword_pos.x += 2
-                sword_attack_pos.x += 2
+                x_velocity = 2
+                y_velocity = 0
                 sb = True
                 pencere.blit(playerright, playerright_pos)
-                if keys[pygame.K_SPACE]:
-                    pencere.blit(sword_attack, sword_attack_pos)
-                    pencere.blit(playerright, playerright_pos)
-                    bar = bar -  0.1
-                    sb = False
-            elif keys[pygame.K_SPACE]:
+            else:
+                x_velocity = 0
+                y_velocity = 0
+                pencere.blit(player, player_pos)
+                sb = True
+
+            if keys[pygame.K_SPACE]:
                 pencere.blit(sword_attack, sword_attack_pos)
                 pencere.blit(player, player_pos)
                 bar = bar -  0.1
                 sb = False
-            else:
-                pencere.blit(player, player_pos)
-                sb = True
+
+            for playerComponent in playerComponents:
+                playerComponent.x += x_velocity
+                playerComponent.y += y_velocity
+            
             if sb == True:
                 pencere.blit(sword, sword_pos)
             if keys[pygame.K_SPACE]:
